@@ -2,8 +2,8 @@
 This is the final iteration of GENERIC-TEAM'S ICS 372 Group Project.
 We are porting the software we previously wrote in Java to the android mobile platform.
 Please read through this documentation as it is every important
-for the success of team collectively, and individually
-Any questions about the project can be asked in our discord group chat.
+for the success of team collectively, and individually.
+Any discussions regarding the project will be done in our discord group chat.
 
 # SET UP PROJECT WITH ANDROID STUDIO
 * Download Android Studio Here: https://developer.android.com/studio/index.html
