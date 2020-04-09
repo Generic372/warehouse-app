@@ -7,9 +7,9 @@ Any questions about the project can be asked in our discord group chat.
 
 # SET UP PROJECT WITH ANDROID STUDIO
 * Download Android Studio Here: https://developer.android.com/studio/index.html
-* Clone this repository into your local machine using git bash 
+* Clone this repository into your local machine using git bash.
   Make sure to clone into a path that does not contain white spaces 
-  i.e (C:\Users\swift\OneDrive\Documents\Object-Oriented Design and Implementation) would not be ideal
+  i.e (C:\Users\swift\OneDrive\Documents\Object-Oriented Design and Implementation) would not be ideal.
 * Open Android Studio and select: Open Existing Project
 * Navigate to the directory where project is loacted and select. HURRAY!
 
