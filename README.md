@@ -1,5 +1,5 @@
 # WAREHOUSE-TRACKER-BUILD
-[![Build Status](https://jenkins.autocicd.org/buildStatus/icon?job=warehouse-android-app)](https://jenkins.autocicd.org/job/warehouse-android-app/)
+[![Build Status](https://jenkins.autocicd.org/job/warehouse-android-app/badge/icon)](https://jenkins.autocicd.org/job/warehouse-android-app/)
 
 # WAREHOUSE-TRACKER-ANDROID
 This is the final iteration of GENERIC-TEAM'S ICS 372 Group Project.
