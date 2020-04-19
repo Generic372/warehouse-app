@@ -5,7 +5,7 @@ This repository house the Warehouse Tracker application for the android mobile p
 
 ## LINKS
 - Build: https://jenkins.autocicd.org/user/admin/my-views/view/all/job/warehouse-android-app/
-- Project: https://github.com/Generic372/warehouse-app/projects/1?add_cards_query=is%3Aopen
+- Project: https://github.com/Generic372/warehouse-app/projects/1
 
 ## SET UP PROJECT WITH ANDROID STUDIO
 * Download Android Studio Here: https://developer.android.com/studio/index.html
