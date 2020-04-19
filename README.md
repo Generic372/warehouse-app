@@ -1,12 +1,8 @@
 # WAREHOUSE-TRACKER-BUILD
-[![Build Status](https://jenkins.autocicd.org/job/warehouse-android-app/badge/icon)](https://jenkins.autocicd.org/job/warehouse-android-app/)
+[![Build Status](https://jenkins.autocicd.org/buildStatus/icon?job=warehouse-android-app)](https://jenkins.autocicd.org/job/warehouse-android-app/)
 
 # WAREHOUSE-TRACKER-ANDROID
-This is the final iteration of GENERIC-TEAM'S ICS 372 Group Project.
-We are porting the software we previously wrote in Java to the android mobile platform.
-Please read through this documentation as it is every important
-for the success of team collectively, and individually.
-Any discussions regarding the project will be done in our discord group chat.
+This repository house the Warehouse Tracker application for the android mobile platform.
 
 # SET UP PROJECT WITH ANDROID STUDIO
 * Download Android Studio Here: https://developer.android.com/studio/index.html
