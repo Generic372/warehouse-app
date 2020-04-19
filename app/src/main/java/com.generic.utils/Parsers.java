@@ -1,5 +1,9 @@
 package com.generic.utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.io.File;
 import java.io.FileReader;
 import java.util.HashMap;
@@ -29,6 +33,7 @@ public class Parsers {
 	 * @param filepath the path of JSON file
 	 * @throws Exception
 	 */
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	@SuppressWarnings("unchecked")
 	public static void parseJson(String filepath) throws Exception  {
 		JSONParser jsonParser = new JSONParser();
