@@ -1,10 +1,13 @@
-# WAREHOUSE-TRACKER-BUILD
+# WAREHOUSE-TRACKER
 [![Build Status](https://jenkins.autocicd.org/buildStatus/icon?job=warehouse-android-app)](https://jenkins.autocicd.org/job/warehouse-android-app/)
 
-# WAREHOUSE-TRACKER-ANDROID
 This repository house the Warehouse Tracker application for the android mobile platform.
 
-# SET UP PROJECT WITH ANDROID STUDIO
+## LINKS
+- Build: https://jenkins.autocicd.org/user/admin/my-views/view/all/job/warehouse-android-app/
+- Project: https://github.com/Generic372/warehouse-app/projects/1?add_cards_query=is%3Aopen
+
+## SET UP PROJECT WITH ANDROID STUDIO
 * Download Android Studio Here: https://developer.android.com/studio/index.html
 * Clone this repository into your local machine using git bash.
   Make sure to clone into a path that does not contain white spaces 
@@ -12,11 +15,11 @@ This repository house the Warehouse Tracker application for the android mobile p
 * Open Android Studio and select: Open Existing Project
 * Navigate to the directory where project is loacted and select. HURRAY!
 
-# PULL REQUESTS
+## PULL REQUESTS
 When making a PR please:
 * Checkout new branch like so: checkout -b DEV_#[issue_number_here]
   (Issue number is the number attached to the task assigned to you,
   this is found in the project section). See also below about linking your PR with issue numbers
 
-# COMMITING CODE WITH LINK TO ISSUE NUMBER
+## COMMITING CODE WITH LINK TO ISSUE NUMBER
 * Please read about linking issue numbers with your PR here: https://help.github.com/en/github/managing-your-work-on-github/linking-a-pull-request-to-an-issue
