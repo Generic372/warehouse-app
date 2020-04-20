@@ -1,5 +1,9 @@
 package com.generic.models;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,8 +12,6 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 /**
  * This class will be responsible for creating and tracking a collection of warehouses and
@@ -226,14 +228,15 @@ public final class WarehouseFactory extends PersistentJson {
 	 * Gets the list of warehouses, needed by GUI to populate the TableView
 	 * @return ObservableList of warehouses
 	 */
-	public ObservableList<Warehouse> getWarehousesList() {
+	public List<Warehouse> getWarehousesList() {
 		List<Warehouse> warehousesAsList = new ArrayList<Warehouse>(warehouses.values());
-		return FXCollections.observableList(warehousesAsList);
+		return warehousesAsList;
 	}
 
 	/**
 	 * Prints all available warehouses
 	 */
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	public void printAll() {
 		warehouses.forEach((k, v) -> printWarehouseDetails(k));
 	}
