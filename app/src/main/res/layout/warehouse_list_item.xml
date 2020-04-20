@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:layout_width="match_parent"
+
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp"
+    android:id="@+id/warehouse_cv"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/warehouse_image"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/delivery"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/warehouse_id"
+            android:layout_toEndOf="@id/warehouse_image"
+            android:layout_alignParentTop="true"
+            android:text="Warehouse ID:"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/warehouse_name"
+            android:layout_toEndOf="@id/warehouse_image"
+            android:layout_below="@id/warehouse_id"
+            android:text="Warehouse Name:"
+            android:textSize="18sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/freight_receipt"
+            android:layout_toEndOf="@id/warehouse_image"
+            android:layout_below="@id/warehouse_name"
+            android:text="Freight Receipt:"
+            android:textSize="18sp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shipments_available"
+            android:layout_toEndOf="@id/warehouse_image"
+            android:layout_below="@id/freight_receipt"
+            android:text="Shipments Available:"
+            android:textSize="18sp"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
