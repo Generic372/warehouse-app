@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="6dp"
+    app:cardElevation="6dp"
+    android:id="@+id/shipment_cv">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/shipment_img"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/shipment_img"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shipment_id"
+            android:layout_toEndOf="@id/shipment_img"
+            android:layout_alignParentTop="true"
+            android:text="Shipment ID:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/receipt_date"
+            android:layout_toEndOf="@id/shipment_img"
+            android:layout_below="@id/shipment_id"
+            android:text="Receipt Date:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/departure_date"
+            android:layout_toEndOf="@id/shipment_img"
+            android:layout_below="@id/receipt_date"
+            android:text="Departure Date:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/freight_type"
+            android:layout_toEndOf="@id/shipment_img"
+            android:layout_below="@id/departure_date"
+            android:text="Freight Type:"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weight"
+            android:layout_toEndOf="@id/shipment_img"
+            android:layout_below="@id/freight_type"
+            android:text="Weight:"
+            android:textSize="18sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/weight_unit"
+            android:layout_toEndOf="@id/shipment_img"
+            android:layout_below="@id/weight"
+            android:text="Weight Unit:"
+            android:textSize="18sp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
