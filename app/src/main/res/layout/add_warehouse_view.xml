@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     tools:context=".activities.WarehouseActivity">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,8 +42,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/freight_receipt_spinner"/>
-
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_warehouse_button"
+            android:text="ADD WAREHOUSE"/>
     </LinearLayout>
+
+
+
+
 
 </RelativeLayout>

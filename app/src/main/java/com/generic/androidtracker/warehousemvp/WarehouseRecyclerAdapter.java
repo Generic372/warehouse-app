@@ -1,4 +1,4 @@
-package com.generic.androidtracker.adapters;
+package com.generic.androidtracker.warehousemvp;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,24 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.generic.androidtracker.R;
+import com.generic.androidtracker.interfaces.OnWarehouseListener;
 import com.generic.models.Warehouse;
 
 import java.util.List;
 
-public class WarehouseAdapter extends RecyclerView.Adapter<WarehouseAdapter.WarehouseViewHolder> {
+/**
+ * A Recycler adapter view holding warehouse cardView
+ * items. WarehouseViewHolder handles each cardView.
+ */
+public class WarehouseRecyclerAdapter extends RecyclerView.Adapter<WarehouseRecyclerAdapter.WarehouseViewHolder> implements OnWarehouseListener{
 
-    List<Warehouse> warehouses;
+    private List<Warehouse> warehouses;
+    private OnWarehouseListener onWarehouseListener;
 
-    public static class WarehouseViewHolder extends RecyclerView.ViewHolder{
+    @Override
+    public void onWarehouseClicked(int position) {}
+
+    public static class WarehouseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         CardView cardView;
         //ImageView warehouseImage;
@@ -25,22 +34,29 @@ public class WarehouseAdapter extends RecyclerView.Adapter<WarehouseAdapter.Ware
         TextView warehouseName;
         TextView freightReceipt;
         TextView shipmentsNum;
+        OnWarehouseListener onWarehouseListener;
 
 
-        public WarehouseViewHolder(View itemView){
+        public WarehouseViewHolder(View itemView, OnWarehouseListener onWarehouseListener){
             super(itemView);
             cardView = itemView.findViewById(R.id.warehouse_cv);
             warehouseID = itemView.findViewById(R.id.warehouse_id);
             warehouseName = itemView.findViewById(R.id.warehouse_name);
             freightReceipt = itemView.findViewById(R.id.freight_receipt);
             shipmentsNum = itemView.findViewById(R.id.shipments_available);
+            this.onWarehouseListener = onWarehouseListener;
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View view) { onWarehouseListener.onWarehouseClicked(getAdapterPosition()); }
     }
 
     @Override
-    public WarehouseAdapter.WarehouseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public WarehouseRecyclerAdapter.WarehouseViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.warehouse_list_item, viewGroup, false);
-        return new WarehouseViewHolder(v);
+        return new WarehouseViewHolder(v, onWarehouseListener);
     }
 
     @Override
@@ -55,10 +71,11 @@ public class WarehouseAdapter extends RecyclerView.Adapter<WarehouseAdapter.Ware
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) { super.onAttachedToRecyclerView(recyclerView); }
 
-    public WarehouseAdapter(List<Warehouse> warehouses){ this.warehouses = warehouses; }
+    public WarehouseRecyclerAdapter(List<Warehouse> warehouses, OnWarehouseListener onWarehouseListener){
+        this.warehouses = warehouses;
+        this.onWarehouseListener = onWarehouseListener;
+    }
 
     @Override
-    public int getItemCount() {
-        return warehouses.size();
-    }
+    public int getItemCount() { return warehouses.size(); }
 }

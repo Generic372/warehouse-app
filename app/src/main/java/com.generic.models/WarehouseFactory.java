@@ -30,8 +30,7 @@ public final class WarehouseFactory extends PersistentJson {
 	private Map<String, Warehouse> warehouses;
 
 	// private constructor
-	private WarehouseFactory() {
-	}
+	private WarehouseFactory() {}
 
 	public static WarehouseFactory getInstance() {
 		if (warehouseTracker == null) {
@@ -107,6 +106,7 @@ public final class WarehouseFactory extends PersistentJson {
 	 *
 	 * @param warehousesItems list of warehouses to delete
 	 */
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	public void removeAllWarehouses(List<Warehouse> warehousesItems) {
 		for (Warehouse warehouse : warehousesItems) {
 			removeWarehouse(warehouse);
@@ -119,6 +119,7 @@ public final class WarehouseFactory extends PersistentJson {
 	 * @param warehouse warehouse object to remove
 	 * @return true if remove was successful, false if not
 	 */
+	@RequiresApi(api = Build.VERSION_CODES.N)
 	public boolean removeWarehouse(Warehouse warehouse) {
 		return warehouses.remove(warehouse.getId(), warehouse);
 	}
