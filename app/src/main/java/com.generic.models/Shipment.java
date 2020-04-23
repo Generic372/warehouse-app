@@ -57,7 +57,13 @@ public class Shipment extends PersistentJson {
 
 	public long getDepartureDate() { return departureDate; }
 
-	public String getDepartureDateString() { return DateUtil.milliToDate(departureDate); }
+	public String getDepartureDateString() {
+		if (departureDate == 0L) {
+			return "Shipment has not Departed";
+		} else {
+			return DateUtil.milliToDate(departureDate);
+		}
+	}
 
 	public WeightUnit getWeightUnit() { return weightUnit; }
 
