@@ -23,7 +23,7 @@ public class Warehouse extends PersistentJson {
 
 	/**
 	 * Construct a new warehouse
-	 * @param id warehouse identification number
+	 * @param warehouseID warehouse identification number
 	 */
 	public Warehouse(String warehouseID) {
 		this.shipments = new ArrayList<Shipment>();

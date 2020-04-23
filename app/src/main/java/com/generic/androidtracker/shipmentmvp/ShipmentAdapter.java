@@ -1,4 +1,4 @@
-package com.generic.androidtracker.adapters;
+package com.generic.androidtracker.shipmentmvp;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +13,10 @@ import com.generic.models.Shipment;
 
 import java.util.List;
 
+/**
+ * A Recycler adapter view holding shipment cardView
+ * items. ShipmentViewHolder handles each cardView.
+ */
 public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.ShipmentViewHolder> {
 
     List<Shipment> shipments;
@@ -52,7 +56,7 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         warehouseViewHolder.freightType.setText("Freight Type: " + shipments.get(i).getFreight());
         warehouseViewHolder.receiptDate.setText("Receipt Date: " + shipments.get(i).getReceiptDateString());
         warehouseViewHolder.weight.setText("Weight: " + shipments.get(i).getWeight());
-        //warehouseViewHolder.depatureDate.setText("Receipt Date: " + shipments.get(i).getDepatureDate());
+        //warehouseViewHolder.depatureDate.setText("Depature Date: " + shipments.get(i).getDepatureDate());
         warehouseViewHolder.weightUnit.setText("Weight Unit: " + shipments.get(i).getWeightUnit());
     }
 
