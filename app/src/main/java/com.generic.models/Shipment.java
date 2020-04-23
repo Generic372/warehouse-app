@@ -11,12 +11,13 @@ import com.generic.utils.DateUtil;
 
 public class Shipment extends PersistentJson {
 
-	private static final String SHIPMENT_DETAIl_FORMAT_STRING = "Shipment_Id: %s\n  Freight_Type: %s\n  Weight: %.2f\n  Receipt_Date: %s\n  Weight_Unit: %s";
+	private static final String SHIPMENT_DETAIl_FORMAT_STRING = "Shipment_Id: %s\n  Freight_Type: %s\n  Weight: %.2f\n  Departure_Date: %s\n Receipt_Date: %s\n  Weight_Unit: %s";
 
 	private FreightType freight; // Freight type
 	private WeightUnit weightUnit; // Shipment weight unit
 	private double weight; // Shipment weight
 	private long receiptDate; // Receipt Date
+	private long departureDate; //Departure Date
 
 	/**
 	 * Constructs a new Shipment
@@ -54,14 +55,23 @@ public class Shipment extends PersistentJson {
 		return DateUtil.milliToDate(receiptDate);
 	}
 
-	public WeightUnit getWeightUnit() {
-		return weightUnit;
-	}
+	public long getDepartureDate() { return departureDate; }
 
+	public String getDepartureDateString() { return DateUtil.milliToDate(departureDate); }
+
+	public WeightUnit getWeightUnit() { return weightUnit; }
+
+	/**
+	 *
+	 * Set the departure date to current date
+	 */
+	public void departureDate() {
+		departureDate = DateUtil.currentDate();
+	}
 
 	@Override
 	public String toString() {
-		return String.format(SHIPMENT_DETAIl_FORMAT_STRING, id, freight.toString().toLowerCase(), weight, getReceiptDateString(), getWeightUnit().toString());
+		return String.format(SHIPMENT_DETAIl_FORMAT_STRING, id, freight.toString().toLowerCase(), weight, getDepartureDateString(), getReceiptDateString(), getWeightUnit().toString());
 	}
 
 	@Override
