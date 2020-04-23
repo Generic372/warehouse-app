@@ -27,7 +27,7 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         //ImageView warehouseImage;
         TextView shipmentID;
         TextView receiptDate;
-        //TextView depatureDate;
+        TextView departureDate;
         TextView freightType;
         TextView weightUnit;
         TextView weight;
@@ -38,6 +38,7 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
             cardView = itemView.findViewById(R.id.shipment_cv);
             shipmentID = itemView.findViewById(R.id.shipment_id);
             receiptDate = itemView.findViewById(R.id.receipt_date);
+            departureDate = itemView.findViewById(R.id.departure_date);
             freightType = itemView.findViewById(R.id.freight_type);
             weight = itemView.findViewById(R.id.weight);
             weightUnit = itemView.findViewById(R.id.weight_unit);
@@ -56,7 +57,7 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         warehouseViewHolder.freightType.setText("Freight Type: " + shipments.get(i).getFreight());
         warehouseViewHolder.receiptDate.setText("Receipt Date: " + shipments.get(i).getReceiptDateString());
         warehouseViewHolder.weight.setText("Weight: " + shipments.get(i).getWeight());
-        //warehouseViewHolder.depatureDate.setText("Depature Date: " + shipments.get(i).getDepatureDate());
+        warehouseViewHolder.departureDate.setText("Departure Date: " + shipments.get(i).getDepartureDateString());
         warehouseViewHolder.weightUnit.setText("Weight Unit: " + shipments.get(i).getWeightUnit());
     }
 

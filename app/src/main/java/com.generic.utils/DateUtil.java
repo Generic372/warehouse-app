@@ -23,4 +23,13 @@ public class DateUtil {
 		Date result = new Date(milliDate);
 		return simple.format(result);
 	}
+
+	/**
+	 * Returns the current date in milliseconds (STATIC)
+	 * @return current date
+	 */
+	public static long currentDate() {
+		Date result = new Date();
+		return result.getTime();
+	}
 }
