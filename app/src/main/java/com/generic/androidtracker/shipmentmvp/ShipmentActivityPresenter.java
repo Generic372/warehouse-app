@@ -15,7 +15,6 @@ public class ShipmentActivityPresenter implements WarehouseTrackerMVP.ShipmentPr
         this.warehouseID = warehouseID;
     }
 
-
     @Override
     public void setView(WarehouseTrackerMVP.ShipmentView view) {
         this.view = view;

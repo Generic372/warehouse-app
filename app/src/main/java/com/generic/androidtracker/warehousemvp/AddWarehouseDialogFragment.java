@@ -61,7 +61,11 @@ public class AddWarehouseDialogFragment extends DialogFragment  {
         warehouseName = view.findViewById(R.id.warehouse_name_input);
         addButton = view.findViewById(R.id.add_warehouse_button);
 
-        addButton.setOnClickListener(e -> onAddWarehouseAction());
+        addButton.setOnClickListener(e ->{
+            if (inputIsValid(warehouseID, warehouseName)){
+                onAddWarehouseAction();
+            }
+        });
 
         freightStatus =  view.findViewById(R.id.freight_receipt_spinner);
 
@@ -82,6 +86,30 @@ public class AddWarehouseDialogFragment extends DialogFragment  {
         warehouseID.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    /**
+     * Validates user input.
+     * @param inputs variable length EditText inputs.
+     * @return true, if input is valid.
+     */
+    public boolean inputIsValid(EditText ...inputs){
+        boolean allValid = true;
+        for (EditText input : inputs){
+            String inputString = input.getText().toString().trim();
+            if (inputString.trim().length() == 0){
+                input.setError("Field is empty");
+                allValid = false;
+            }else if (input.equals(warehouseID)){
+                try {
+                    Integer.parseInt(inputString);
+                }catch (Exception e){
+                    allValid = false;
+                    input.setError("Please enter an integer value, i.e 121, 1");
+                }
+            }
+        }
+        return allValid;
     }
 
 }

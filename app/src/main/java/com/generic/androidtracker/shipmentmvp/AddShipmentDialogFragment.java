@@ -34,6 +34,7 @@ public class AddShipmentDialogFragment extends DialogFragment implements TextVie
     public void onAddShipmentAction(){
         // Return input text back to activity through the implemented listener
         AddShipmentDialogListener listener = (AddShipmentDialogListener) getActivity();
+
         listener.onFinishEditDialog(shipmentID.getText().toString(),
                 weight.getText().toString(),
                 receiptDate.getText().toString(),
@@ -69,7 +70,11 @@ public class AddShipmentDialogFragment extends DialogFragment implements TextVie
         weight = view.findViewById(R.id.weight_input);
         addButton = view.findViewById(R.id.add_shipment_button);
 
-        addButton.setOnClickListener(e -> onAddShipmentAction());
+        addButton.setOnClickListener(e -> {
+            if (inputIsValid(shipmentID, receiptDate, weight)){
+                onAddShipmentAction();
+            }
+        });
 
         freightType =  view.findViewById(R.id.freight_type_spinner);
 
@@ -102,6 +107,37 @@ public class AddShipmentDialogFragment extends DialogFragment implements TextVie
         shipmentID.requestFocus();
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    /**
+     * Validates user input.
+     * @param inputs variable length EditText inputs.
+     * @return true, if input is valid.
+     */
+    public boolean inputIsValid(EditText ...inputs){
+        boolean allValid = true;
+        for (EditText input : inputs){
+            String inputString = input.getText().toString().trim();
+            if (inputString.trim().length() == 0){
+                input.setError("Field is empty");
+                allValid = false;
+            }else if (input.equals(receiptDate)){
+                try {
+                    Long.parseLong(inputString);
+                }catch (Exception e){
+                    allValid = false;
+                    input.setError("Please enter a long value, i.e 1121131313");
+                }
+            }else if (input.equals(weight)){
+                try {
+                    Double.parseDouble(inputString);
+                }catch (Exception e){
+                    allValid = false;
+                    input.setError("Please enter a double value, i.e 33.1, 22");
+                }
+            }
+        }
+        return allValid;
     }
 
 }

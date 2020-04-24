@@ -42,11 +42,12 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
             weight = itemView.findViewById(R.id.weight);
             weightUnit = itemView.findViewById(R.id.weight_unit);
         }
+
     }
 
     @Override
     public ShipmentAdapter.ShipmentViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.shipment_list_item, viewGroup, false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.shipment_card_item, viewGroup, false);
         return new ShipmentViewHolder(v);
     }
 
