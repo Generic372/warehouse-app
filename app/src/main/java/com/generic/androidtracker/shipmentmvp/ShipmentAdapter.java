@@ -3,6 +3,7 @@ package com.generic.androidtracker.shipmentmvp;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
@@ -32,6 +33,8 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         TextView weightUnit;
         TextView weight;
 
+        Button shipOutButton;
+
 
         public ShipmentViewHolder(View itemView){
             super(itemView);
@@ -42,12 +45,15 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
             freightType = itemView.findViewById(R.id.freight_type);
             weight = itemView.findViewById(R.id.weight);
             weightUnit = itemView.findViewById(R.id.weight_unit);
+
+            shipOutButton = itemView.findViewById(R.id.ship_out_button);
         }
+
     }
 
     @Override
-    public ShipmentAdapter.ShipmentViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.shipment_list_item, viewGroup, false);
+    public ShipmentViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.shipment_card_item, viewGroup, false);
         return new ShipmentViewHolder(v);
     }
 
@@ -59,6 +65,17 @@ public class ShipmentAdapter extends RecyclerView.Adapter<ShipmentAdapter.Shipme
         warehouseViewHolder.weight.setText("Weight: " + shipments.get(i).getWeight());
         warehouseViewHolder.departureDate.setText("Departure Date: " + shipments.get(i).getDepartureDateString());
         warehouseViewHolder.weightUnit.setText("Weight Unit: " + shipments.get(i).getWeightUnit());
+
+        if (!shipments.get(i).getDepartureDateString().equalsIgnoreCase(Shipment.SHIPMENT_HAS_NOT_DEPARTED)){
+            warehouseViewHolder.shipOutButton.setVisibility(View.INVISIBLE);
+        }
+
+        warehouseViewHolder.shipOutButton.setOnClickListener(e -> {
+            shipments.get(i).shipOut();
+            notifyDataSetChanged();
+        });
+
+
     }
 
     @Override
