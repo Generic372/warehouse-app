@@ -12,6 +12,7 @@ import com.generic.utils.DateUtil;
 public class Shipment extends PersistentJson {
 
 	private static final String SHIPMENT_DETAIl_FORMAT_STRING = "Shipment_Id: %s\n  Freight_Type: %s\n  Weight: %.2f\n  Departure_Date: %s\n Receipt_Date: %s\n  Weight_Unit: %s";
+	public static final String SHIPMENT_HAS_NOT_DEPARTED = "Shipment has not Departed";
 
 	private FreightType freight; // Freight type
 	private WeightUnit weightUnit; // Shipment weight unit
@@ -59,7 +60,7 @@ public class Shipment extends PersistentJson {
 
 	public String getDepartureDateString() {
 		if (departureDate == 0L) {
-			return "Shipment has not Departed";
+			return SHIPMENT_HAS_NOT_DEPARTED;
 		} else {
 			return DateUtil.milliToDate(departureDate);
 		}
@@ -71,7 +72,7 @@ public class Shipment extends PersistentJson {
 	 *
 	 * Set the departure date to current date
 	 */
-	public void departureDate() {
+	public void shipOut() {
 		departureDate = DateUtil.currentDate();
 	}
 

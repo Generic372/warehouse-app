@@ -1,13 +1,10 @@
-package com.generic.androidtracker.activities;
+package com.generic.androidtracker.shipmentmvp;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.widget.Spinner;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -19,33 +16,35 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.generic.androidtracker.interfaces.AddWarehouseDialogListener;
-import com.generic.androidtracker.interfaces.OnWarehouseListener;
-import com.generic.androidtracker.warehousemvp.AddWarehouseDialogFragment;
 import com.generic.androidtracker.R;
-import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
-import com.generic.androidtracker.warehousemvp.WarehouseActivityPresenter;
 import com.generic.androidtracker.WarehouseApplication;
-import com.generic.androidtracker.warehousemvp.WarehouseRecyclerAdapter;
-import com.generic.models.Warehouse;
+import com.generic.androidtracker.warehousemvp.WarehouseActivity;
+import com.generic.androidtracker.interfaces.AddShipmentDialogListener;
+import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
+import com.generic.models.Shipment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import java.util.List;
 
-public class WarehouseActivity extends AppCompatActivity
-        implements WarehouseTrackerMVP.WarehouseView, AddWarehouseDialogListener, OnWarehouseListener {
+/**
+ *
+ */
+public class ShipmentActivity extends AppCompatActivity implements
+        WarehouseTrackerMVP.ShipmentView, AddShipmentDialogListener {
 
-    List<Warehouse> warehouses;
-
-    private WarehouseTrackerMVP.WarehousePresenter presenter;
+    private WarehouseTrackerMVP.ShipmentPresenter presenter;
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
+    private String warehouseID;
+    private boolean freightEnabled;
+    private FloatingActionButton addButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        warehouseID = getIntent().getStringExtra("warehouseID");
+        freightEnabled = getIntent().getBooleanExtra("freightStatus", true);
         setContentView(R.layout.my_recycler_view);
-        Toolbar toolbar =  findViewById(R.id.my_toolbar);
-        toolbar.setTitle("Warehouses");
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        toolbar.setTitle("Warehouse " + warehouseID + " Shipments");
         toolbar.inflateMenu(R.menu.bottom_nav_menu);
 
         //  Check Storage Permission
@@ -57,58 +56,83 @@ public class WarehouseActivity extends AppCompatActivity
                     WRITE_STORAGE_PERMISSION_REQUEST);
         }
 
-
         final WarehouseApplication application = (WarehouseApplication) getApplication();
 
-        presenter = new WarehouseActivityPresenter(application);
+        presenter = new ShipmentActivityPresenter(application, warehouseID);
         presenter.setView(this);
 
+        addButton = findViewById(R.id.fab);
 
-        FloatingActionButton addButton = findViewById(R.id.fab);
+        // Hide button if freight receipt
+        // is disabled.
+        if (!freightEnabled){
+            addButton.hide();
+        }else{
+            addButton.show();
+        }
 
-        addButton.setOnClickListener(e -> presenter.addWarehouseClicked());
+        addButton.setOnClickListener(e -> presenter.addShipmentClicked());
     }
 
 
     @Override
-    public void showWarehouses(List<Warehouse> warehouses) {
-        this.warehouses = warehouses;
+    public void showShipments(List<Shipment> shipments) {
         RecyclerView recyclerView = findViewById(R.id.cardList);
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        WarehouseRecyclerAdapter warehouseRecyclerAdapter = new WarehouseRecyclerAdapter(warehouses, this);
+        ShipmentAdapter shipmentAdapter = new ShipmentAdapter(shipments);
 
-        recyclerView.setAdapter(warehouseRecyclerAdapter);
+        recyclerView.setAdapter(shipmentAdapter);
 
     }
 
     @Override
-    public void showAddNewWarehouse() {
+    public void showAddNewShipment() {
         showEditDialog();
     }
 
-    private void showEditDialog(){
+    private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        AddWarehouseDialogFragment editNameDialogFragment = AddWarehouseDialogFragment.newInstance("Add New Warehouse");
+        AddShipmentDialogFragment editNameDialogFragment = AddShipmentDialogFragment.newInstance("Add New Warehouse");
         editNameDialogFragment.show(fm, "fragment_edit_name");
     }
 
+    /**
+     * Receives input data from dialog activity.
+     * @param shipmentID shipment id input.
+     * @param weight weight input.
+     * @param receiptDate receipt date input.
+     * @param freightType freight type input.
+     * @param weightUnit weight unit input.
+     */
     @Override
-    public void onFinishEditDialog(String warehouseIDInput,
-                                   String warehouseNameInput,
-                                   String freightStatus) {
-
-        presenter.addWarehouseCompleted(warehouseNameInput, warehouseIDInput, freightStatus);
+    public void onFinishEditDialog(String shipmentID,
+                                   String weight,
+                                   String receiptDate,
+                                   String freightType,
+                                   String weightUnit) {
+        presenter.addShipmentCompleted(shipmentID,
+                weight,
+                receiptDate,
+                freightType,
+                weightUnit);
         presenter.setView(this);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent warehouseChanged;
+        warehouseChanged = new Intent(this, WarehouseActivity.class);
+        startActivity(warehouseChanged);
     }
 
     /**
-     * Indicates when the user has responded to a permission request
-     * @param requestCode The request code
-     * @param permissions The permissions requested
+     * Indicates when the user has responded to a permission request.
+     * @param requestCode  The request code
+     * @param permissions  The permissions requested
      * @param grantResults The result
      */
     @Override
@@ -127,18 +151,9 @@ public class WarehouseActivity extends AppCompatActivity
                     Toast.makeText(this, "Permission required, closing application", Toast.LENGTH_LONG).show();
                     finish();
                 }
-                return;
             }
         }
     }
-
-    @Override
-    public void onWarehouseClicked(int position) {
-        String warehouseID = warehouses.get(position).getId();
-        Intent intent = new Intent(this, ShipmentActivity.class);
-        intent.putExtra("warehouseID", warehouseID);
-        startActivity(intent);
-    }
-
-
 }
+
+

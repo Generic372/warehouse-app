@@ -29,7 +29,7 @@ public interface WarehouseTrackerMVP {
          * Sets a view to the warehouse presenter.
          * @param view view to set.
          */
-        void setView (WarehouseView view);
+        void setView(WarehouseView view);
 
         /**
          * Handles the add warehouse click
@@ -89,7 +89,7 @@ public interface WarehouseTrackerMVP {
          * Sets a view to the shipment presenter.
          * @param view view to set.
          */
-        void setView (ShipmentView view);
+        void setView(ShipmentView view);
 
         /**
          * Handles the add shipment click
