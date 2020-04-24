@@ -24,7 +24,6 @@ public class AddWarehouseDialogFragment extends DialogFragment  {
     private Spinner freightStatus;
     private Button addButton;
 
-
     public void onAddWarehouseAction(){
         // Return input text back to activity through the implemented listener
         AddWarehouseDialogListener listener = (AddWarehouseDialogListener) getActivity();
@@ -34,7 +33,6 @@ public class AddWarehouseDialogFragment extends DialogFragment  {
         // Close the dialog and return back to the parent activity
         dismiss();
     }
-
 
     public AddWarehouseDialogFragment(){}
 
@@ -111,5 +109,4 @@ public class AddWarehouseDialogFragment extends DialogFragment  {
         }
         return allValid;
     }
-
 }

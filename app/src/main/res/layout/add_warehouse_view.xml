@@ -48,9 +48,4 @@
             android:id="@+id/add_warehouse_button"
             android:text="ADD WAREHOUSE"/>
     </LinearLayout>
-
-
-
-
-
 </RelativeLayout>
