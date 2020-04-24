@@ -6,8 +6,6 @@
     android:layout_height="wrap_content"
     tools:context=".shipmentmvp.ShipmentActivity">
 
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,8 +21,6 @@
             android:layout_height="wrap_content"
             android:textSize="25sp"
             android:id="@+id/shipment_id_input"/>
-
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -77,8 +73,5 @@
             android:layout_height="wrap_content"
             android:text="ADD SHIPMENT"
             android:id="@+id/add_shipment_button"/>
-
-
     </LinearLayout>
-
 </RelativeLayout>

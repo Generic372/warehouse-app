@@ -50,8 +50,6 @@ public class WarehouseRecyclerAdapter extends RecyclerView.Adapter<WarehouseRecy
         Button deleteButton;
         OnWarehouseListener onWarehouseListener;
 
-
-
         public WarehouseViewHolder(View itemView, OnWarehouseListener onWarehouseListener){
             super(itemView);
             cardView = itemView.findViewById(R.id.warehouse_cv);
@@ -61,9 +59,7 @@ public class WarehouseRecyclerAdapter extends RecyclerView.Adapter<WarehouseRecy
             shipmentsNum = itemView.findViewById(R.id.shipments_available);
             freightButton = itemView.findViewById(R.id.freight_button);
             deleteButton = itemView.findViewById(R.id.delete_button);
-
             this.onWarehouseListener = onWarehouseListener;
-
             itemView.setOnClickListener(this);
         }
 
@@ -120,7 +116,6 @@ public class WarehouseRecyclerAdapter extends RecyclerView.Adapter<WarehouseRecy
                     warehouses.remove(toRemove);
                     warehouseFactory.removeWarehouse(warehouseToDelete);
                     notifyItemRemoved(toRemove);
-                    notifyItemRemoved(toRemove);
                     notifyItemRangeChanged(toRemove, warehouses.size());
                     break;
 
@@ -130,7 +125,6 @@ public class WarehouseRecyclerAdapter extends RecyclerView.Adapter<WarehouseRecy
             }
         }
     };
-
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {

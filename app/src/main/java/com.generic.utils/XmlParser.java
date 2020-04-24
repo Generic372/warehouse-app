@@ -1,5 +1,9 @@
 package com.generic.utils;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.generic.models.WarehouseFactory;
 import com.generic.xml.models.ShipmentXml;
 import com.generic.xml.models.ShipmentsXml;
@@ -19,6 +23,7 @@ public class XmlParser implements IParser {
      * @throws Exception throws exceptions specified in the
      * 					 simplexml API if parsing if unsuccessful.
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void parse(String filePath) throws Exception {
         Serializer serializer = new Persister();

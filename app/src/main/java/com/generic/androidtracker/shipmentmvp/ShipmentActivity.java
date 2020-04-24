@@ -45,7 +45,7 @@ public class ShipmentActivity extends AppCompatActivity implements
         setContentView(R.layout.my_recycler_view);
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         toolbar.setTitle("Warehouse " + warehouseID + " Shipments");
-        toolbar.inflateMenu(R.menu.bottom_nav_menu);
+        toolbar.inflateMenu(R.menu.warehouse_menu);
 
         //  Check Storage Permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -82,9 +82,9 @@ public class ShipmentActivity extends AppCompatActivity implements
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ShipmentAdapter shipmentAdapter = new ShipmentAdapter(shipments);
+        ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments);
 
-        recyclerView.setAdapter(shipmentAdapter);
+        recyclerView.setAdapter(shipmentRecyclerAdapter);
 
     }
 

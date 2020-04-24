@@ -37,7 +37,7 @@ public class JsonParser implements IParser {
      * Parses and assigns shipment object for each warehouse
      * @param shipmentObject shipment object in json
      */
-    private static void parseJsonContentsToObjects(JSONObject shipmentObject) {
+    private void parseJsonContentsToObjects(JSONObject shipmentObject) {
 
         WarehouseFactory warehouseTracker = WarehouseFactory.getInstance();
 
