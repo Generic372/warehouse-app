@@ -139,6 +139,7 @@ public final class WarehouseFactory extends PersistentJson {
 	 */
 	public boolean removeShipment(String warehouseID, Shipment shipment) {
 		return getWarehouse(warehouseID).getShipmentList().remove(shipment);
+
 	}
 
 	/**
