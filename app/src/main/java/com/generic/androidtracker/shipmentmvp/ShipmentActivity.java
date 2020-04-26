@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.generic.androidtracker.R;
 import com.generic.androidtracker.WarehouseApplication;
-import com.generic.androidtracker.interfaces.OnShipmentListener;
 import com.generic.androidtracker.warehousemvp.WarehouseActivity;
 import com.generic.androidtracker.interfaces.AddShipmentDialogListener;
 import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
@@ -30,7 +29,7 @@ import java.util.List;
  *
  */
 public class ShipmentActivity extends AppCompatActivity
-        implements WarehouseTrackerMVP.ShipmentView, AddShipmentDialogListener, OnShipmentListener {
+        implements WarehouseTrackerMVP.ShipmentView, AddShipmentDialogListener {
 
     private WarehouseTrackerMVP.ShipmentPresenter presenter;
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
@@ -156,14 +155,6 @@ public class ShipmentActivity extends AppCompatActivity
                 }
             }
         }
-    }
-
-    @Override
-    public void onShipmentClicked(int position) {
-        String shipmentID = shipments.get(position).getId();
-        Intent intent = new Intent (this, ShipmentActivity.class);
-        intent.putExtra("shipmentID", shipmentID);
-        startActivity(intent);
     }
 }
 
