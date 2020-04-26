@@ -18,7 +18,6 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.generic.androidtracker.R;
-import com.generic.androidtracker.interfaces.OnShipmentListener;
 import com.generic.models.Shipment;
 import com.generic.models.Warehouse;
 import com.generic.models.WarehouseFactory;
@@ -29,7 +28,7 @@ import java.util.List;
  * A Recycler adapter view holding shipment cardView
  * items. ShipmentViewHolder handles each cardView.
  */
-public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecyclerAdapter.ShipmentViewHolder> implements OnShipmentListener{
+public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecyclerAdapter.ShipmentViewHolder>{
 
     private final String warehouseID;
     private List<Shipment> shipments;
