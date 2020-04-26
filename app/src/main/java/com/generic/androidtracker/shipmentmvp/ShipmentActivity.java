@@ -28,14 +28,15 @@ import java.util.List;
 /**
  *
  */
-public class ShipmentActivity extends AppCompatActivity implements
-        WarehouseTrackerMVP.ShipmentView, AddShipmentDialogListener {
+public class ShipmentActivity extends AppCompatActivity
+        implements WarehouseTrackerMVP.ShipmentView, AddShipmentDialogListener {
 
     private WarehouseTrackerMVP.ShipmentPresenter presenter;
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
     private String warehouseID;
     private boolean freightEnabled;
     private FloatingActionButton addButton;
+    private List<Shipment> shipments;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,12 +78,13 @@ public class ShipmentActivity extends AppCompatActivity implements
 
     @Override
     public void showShipments(List<Shipment> shipments) {
+        this.shipments = shipments;
         RecyclerView recyclerView = findViewById(R.id.cardList);
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments);
+        ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments, this, warehouseID);
 
         recyclerView.setAdapter(shipmentRecyclerAdapter);
 
