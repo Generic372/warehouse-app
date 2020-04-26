@@ -73,13 +73,12 @@
                 android:layout_weight="1"
                 android:id="@+id/freight_button"
                 android:text="ENABLE" />
-
             <Button
-                android:id="@+id/delete_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="DELETE WAREHOUSE" />
+                android:id="@+id/delete_button"
+                android:text="DELETE WAREHOUSE"/>
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
