@@ -33,14 +33,10 @@ public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecycl
 
     private final String warehouseID;
     private List<Shipment> shipments;
-    private OnShipmentListener onShipmentListener;
     private Context wContext;
     private int toRemove;
 
-    @Override
-    public void onShipmentClicked(int position) {}
-
-    public static class ShipmentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public static class ShipmentViewHolder extends RecyclerView.ViewHolder{
 
         CardView cardView;
         //ImageView warehouseImage;
@@ -53,9 +49,8 @@ public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecycl
         TextView weight;
         Button shipOutButton;
         Button deleteShipmentButton;
-        OnShipmentListener onShipmentListener;
 
-        public ShipmentViewHolder(View itemView, OnShipmentListener onShipmentListener){
+        public ShipmentViewHolder(View itemView){
             super(itemView);
             cardView = itemView.findViewById(R.id.shipment_cv);
             shipmentID = itemView.findViewById(R.id.shipment_id);
@@ -67,17 +62,13 @@ public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecycl
             weightUnit = itemView.findViewById(R.id.weight_unit);
             shipOutButton = itemView.findViewById(R.id.ship_out_button);
             deleteShipmentButton = itemView.findViewById(R.id.delete_shipment_button);
-            this.onShipmentListener = onShipmentListener;
-            itemView.setOnClickListener(this);
         }
-        @Override
-        public void onClick(View view) { onShipmentListener.onShipmentClicked(getAdapterPosition()); }
     }
 
     @Override
     public ShipmentViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.shipment_card_item, viewGroup, false);
-        return new ShipmentViewHolder(v, onShipmentListener);
+        return new ShipmentViewHolder(v);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -138,9 +129,8 @@ public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecycl
     }
 
 
-    public ShipmentRecyclerAdapter(List<Shipment> shipments, OnShipmentListener onShipmentListener, String warehouseID){
+    public ShipmentRecyclerAdapter(List<Shipment> shipments, String warehouseID){
         this.shipments = shipments;
-        this.onShipmentListener = onShipmentListener;
         this.warehouseID = warehouseID;
     }
 
