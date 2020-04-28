@@ -81,7 +81,7 @@ public class WarehouseRecyclerAdapter extends RecyclerView.Adapter<WarehouseRecy
         String freightReceiptStatus = warehouses.get(i).getFreightReceiptEnabled() ? "ENABLED" : "DISABLED";
         warehouseViewHolder.freightReceipt.setText("Receipt Status: " + freightReceiptStatus);
         warehouseViewHolder.shipmentsNum.setText("Shipment Available: " + warehouses.get(i).getShipmentSize());
-        String buttonString = warehouses.get(i).getFreightReceiptEnabled() ? "DISABLE FREIGHT RECEIPT" : "ENABLE FREIGHT RECEIPT";
+        String buttonString = warehouses.get(i).getFreightReceiptEnabled() ? "DISABLE FR" : "ENABLE FR";
         warehouseViewHolder.freightButton.setText(buttonString);
 
         warehouseViewHolder.freightButton.setOnClickListener(e -> {
