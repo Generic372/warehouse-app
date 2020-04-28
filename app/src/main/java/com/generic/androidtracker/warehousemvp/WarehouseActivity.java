@@ -4,9 +4,9 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -27,21 +27,27 @@ import com.generic.androidtracker.R;
 import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
 import com.generic.androidtracker.WarehouseApplication;
 import com.generic.models.Warehouse;
+import com.generic.models.WarehouseFactory;
 import com.generic.utils.IParser;
 import com.generic.utils.JsonParser;
 import com.generic.utils.XmlParser;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.hbisoft.pickit.PickiT;
+import com.hbisoft.pickit.PickiTCallbacks;
 
+import java.io.File;
 import java.util.List;
 
 public class WarehouseActivity extends AppCompatActivity
-        implements WarehouseTrackerMVP.WarehouseView, AddWarehouseDialogListener, OnWarehouseListener {
+        implements WarehouseTrackerMVP.WarehouseView, AddWarehouseDialogListener, OnWarehouseListener, PickiTCallbacks {
 
     public static final int REQUEST_CODE = 4;
     public static final String JSON_MIME_TYPE = "application/json";
     public static final String XML_MIME_TYPE = "text/xml";
     private List<Warehouse> warehouses;
     private WarehouseTrackerMVP.WarehousePresenter presenter;
+    private PickiT pickiT; // Needed to get the real path from uri
+    private String realPath;
 
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -53,7 +59,9 @@ public class WarehouseActivity extends AppCompatActivity
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_recycler_view);
+        setContentView(R.layout.recycler_view);
+
+        boolean ignoreSavedInstance = getIntent().getBooleanExtra("ignoreSavedInstance", false);
 
         Toolbar toolbar =  findViewById(R.id.my_toolbar);
         toolbar.setTitle("Warehouses");
@@ -68,6 +76,10 @@ public class WarehouseActivity extends AppCompatActivity
 
         verifyStoragePermissions(this);
 
+        // Initialize PickiT
+        // context, listener, activity
+        pickiT = new PickiT(this, this,this);
+
         final WarehouseApplication application = (WarehouseApplication) getApplication();
 
         presenter = new WarehouseActivityPresenter(application);
@@ -77,6 +89,10 @@ public class WarehouseActivity extends AppCompatActivity
 
         addButton.setOnClickListener(e -> presenter.addWarehouseClicked());
 
+        // flag to prevent creation of
+        // duplicate objects every-time we
+        // navigate from shipment activity
+        if (!ignoreSavedInstance){ restoreSavedState(); }
     }
 
     /**
@@ -106,8 +122,9 @@ public class WarehouseActivity extends AppCompatActivity
      */
     public void importData(String mimeType)
     {
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setType(mimeType);
         startActivityForResult(intent, REQUEST_CODE);
     }
@@ -116,14 +133,10 @@ public class WarehouseActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
-            if (data != null){
-                Uri uri = data.getData();
-                String path = uri.getPath();
-                path = path.substring(path.indexOf(":") + 1);
-                String type = path.substring(path.indexOf(".") + 1);
-                parseData(type, path);
-
-            }
+            pickiT.getPath(data.getData(), Build.VERSION.SDK_INT);
+            String path = realPath.substring(realPath.indexOf(":") + 1);
+            String type = path.substring(path.indexOf(".") + 1);
+            parseData(type, path);
         }
     }
 
@@ -133,7 +146,6 @@ public class WarehouseActivity extends AppCompatActivity
      * @param path path of file.
      */
     private void parseData(String type, String path) {
-
         if (type.equalsIgnoreCase("json")){
             IParser jsonParser = new JsonParser();
             try {
@@ -208,12 +220,6 @@ public class WarehouseActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.import_data:
-                Toast.makeText(this, "Import Data Selected", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.export_data:
-                Toast.makeText(this, "Export Data Selected", Toast.LENGTH_SHORT).show();
-                return true;
             case R.id.import_json:
                 importData(JSON_MIME_TYPE);
                 Toast.makeText(this, "Import JSON Selected", Toast.LENGTH_SHORT).show();
@@ -223,9 +229,63 @@ public class WarehouseActivity extends AppCompatActivity
                 Toast.makeText(this, "Import XML Selected", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.export_json:
+                exportDataToExternalStorage();
                 Toast.makeText(this, "Export JSON Selected", Toast.LENGTH_SHORT).show();
                 return true;
             default: return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void exportDataToExternalStorage() {
+        WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
+        File exportPath = new File (Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                + "/warehousecontents.json");
+        warehouseFactory.saveToDir(exportPath.getAbsolutePath());
+    }
+
+    private void restoreSavedState() {
+        File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
+        IParser jsonParser = new JsonParser();
+        try {
+            jsonParser.parse(savedInstancePath.getAbsolutePath());
+        } catch (Exception e) {
+            Toast.makeText(this, "No saved state found/ Data corrupted", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+        presenter.setView(this);
+    }
+
+    @Override
+    public void PickiTonUriReturned() { }
+
+    @Override
+    public void PickiTonStartListener() { }
+
+    @Override
+    public void PickiTonProgressUpdate(int progress) { }
+
+    @Override
+    public void PickiTonCompleteListener(String path, boolean wasDriveFile, boolean wasUnknownProvider, boolean wasSuccessful, String Reason) {
+        this.realPath = path;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveState();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveState();
+        pickiT.deleteTemporaryFile();
+    }
+
+    private void saveState() {
+        WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
+        File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
+        warehouseFactory.saveToDir(savedInstancePath.getAbsolutePath());
     }
 }

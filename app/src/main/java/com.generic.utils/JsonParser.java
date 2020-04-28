@@ -28,34 +28,35 @@ public class JsonParser implements IParser {
         FileReader reader = new FileReader(filePath);
         JSONObject jsonFile = (JSONObject) jsonParser.parse(reader);
         JSONArray warehouseContents = (JSONArray) jsonFile.get("warehouse_contents");
-        warehouseContents.forEach(shipmentObject -> parseJsonContentsToObjects((JSONObject) shipmentObject));
+        warehouseContents.forEach(warehouseObject -> parseJsonContentsToObjects((JSONObject) warehouseObject));
 
         reader.close();
     }
 
     /**
      * Parses and assigns shipment object for each warehouse
-     * @param shipmentObject shipment object in json
+     * @param warehouseObject shipment object in json
      */
-    private void parseJsonContentsToObjects(JSONObject shipmentObject) {
+    private void parseJsonContentsToObjects(JSONObject warehouseObject) {
 
         WarehouseFactory warehouseTracker = WarehouseFactory.getInstance();
 
-        String warehouseID = (String) shipmentObject.get("warehouse_id");
-        String warehouseName = (String) shipmentObject.get("warehouse_name");
+        String warehouseID = (String) warehouseObject.get("warehouse_id");
+        String warehouseName = (String) warehouseObject.get("warehouse_name");
 
-        String fTypeString = (String) shipmentObject.get("shipment_method");
+        String fTypeString = (String) warehouseObject.get("shipment_method");
 
-        String weightUnitString = (String)shipmentObject.get("weight_unit");
+        String weightUnitString = (String)warehouseObject.get("weight_unit");
 
         Map<String, Object> parsedData = new HashMap<String, Object>();
         parsedData.put("warehouseID", warehouseID);
         parsedData.put("warehouseName", warehouseName);
-        parsedData.put("shipmentID", shipmentObject.get("shipment_id"));
+        parsedData.put("shipmentID", warehouseObject.get("shipment_id"));
         parsedData.put("fTypeString", fTypeString);
         parsedData.put("wUnitString", weightUnitString);
-        parsedData.put("weight", shipmentObject.get("weight"));
-        parsedData.put("receiptDate", shipmentObject.get("receipt_date"));
+        parsedData.put("weight", warehouseObject.get("weight"));
+        parsedData.put("departure_date", warehouseObject.get("departure_date"));
+        parsedData.put("receiptDate", warehouseObject.get("receipt_date"));
 
         warehouseTracker.addParsedData(parsedData);
     }
