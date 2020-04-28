@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/delete_button"
-                android:text="DELETE WAREHOUSE"/>
+                android:text="DELETE"/>
         </LinearLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
