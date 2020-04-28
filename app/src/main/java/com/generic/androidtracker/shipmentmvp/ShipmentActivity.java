@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import android.os.Environment;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,11 +25,15 @@ import com.generic.androidtracker.warehousemvp.WarehouseActivity;
 import com.generic.androidtracker.interfaces.AddShipmentDialogListener;
 import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
 import com.generic.models.Shipment;
+import com.generic.models.Warehouse;
+import com.generic.models.WarehouseFactory;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.io.File;
 import java.util.List;
 
 /**
- *
+ * Handles the shipment view
  */
 public class ShipmentActivity extends AppCompatActivity implements
         WarehouseTrackerMVP.ShipmentView, AddShipmentDialogListener {
@@ -42,10 +49,17 @@ public class ShipmentActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         warehouseID = getIntent().getStringExtra("warehouseID");
         freightEnabled = getIntent().getBooleanExtra("freightStatus", true);
-        setContentView(R.layout.my_recycler_view);
-        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        setContentView(R.layout.recycler_view);
+        Toolbar toolbar =  findViewById(R.id.my_toolbar);
         toolbar.setTitle("Warehouse " + warehouseID + " Shipments");
-        toolbar.inflateMenu(R.menu.warehouse_menu);
+        toolbar.inflateMenu(R.menu.shipment_menu);
+        toolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
 
         //  Check Storage Permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -82,17 +96,18 @@ public class ShipmentActivity extends AppCompatActivity implements
 
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments);
+        ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments, warehouseID);
 
         recyclerView.setAdapter(shipmentRecyclerAdapter);
 
     }
 
     @Override
-    public void showAddNewShipment() {
-        showEditDialog();
-    }
+    public void showAddNewShipment() { showEditDialog(); }
 
+    /**
+     * Fires up dialog fragment
+     */
     private void showEditDialog() {
         FragmentManager fm = getSupportFragmentManager();
         AddShipmentDialogFragment editNameDialogFragment = AddShipmentDialogFragment.newInstance("Add New Warehouse");
@@ -126,6 +141,7 @@ public class ShipmentActivity extends AppCompatActivity implements
         super.onBackPressed();
         Intent warehouseChanged;
         warehouseChanged = new Intent(this, WarehouseActivity.class);
+        warehouseChanged.putExtra("ignoreSavedInstance", true);
         startActivity(warehouseChanged);
     }
 
@@ -153,6 +169,48 @@ public class ShipmentActivity extends AppCompatActivity implements
                 }
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.export_warehouse:
+                exportWarehouseToExternalStorage();
+                Toast.makeText(this, "Warehouse saved to downloads", Toast.LENGTH_SHORT).show();
+                return true;
+            default: return super.onOptionsItemSelected(item);
+        }
+    }
+
+    /**
+     * Exports warehouse to downloads directory
+     */
+    private void exportWarehouseToExternalStorage() {
+        WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
+        Warehouse warehouse = warehouseFactory.getWarehouse(warehouseID);
+        File exportPath = new File (Environment
+                .getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                + String.format("/warehouse_%s contents.json", warehouseID));
+        warehouse.saveToDir(exportPath.getAbsolutePath());
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveState();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveState();
+    }
+
+    private void saveState() {
+        WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
+        File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
+        warehouseFactory.saveToDir(savedInstancePath.getAbsolutePath());
     }
 }
 

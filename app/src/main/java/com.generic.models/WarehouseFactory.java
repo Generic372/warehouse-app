@@ -258,14 +258,20 @@ public final class WarehouseFactory extends PersistentJson {
 		List<Shipment> shipmentList;
 
 		for (Warehouse warehouse : warehousesList) {
-			shipmentList = warehouse.getShipmentList();
-			// to reproduce the original file
-			for (Shipment shipment : shipmentList) {
-				JSONObject shipmentJson = shipment.toJSON();
-				// "shipment has-a warehouse instead of warehouse has-many shipments"
-				shipmentJson.put("warehouse_id", warehouse.getId());
-				shipmentJson.put("warehouse_name", warehouse.getWarehouseName());
-				shipmentJsonList.add(shipmentJson);
+			if (warehouse.getShipmentList().size() == 0){
+				JSONObject warehouseJson = new JSONObject();
+				warehouseJson.put("warehouse_id", warehouse.getId());
+				warehouseJson.put("warehouse_name", warehouse.getWarehouseName());
+				shipmentJsonList.add(warehouseJson);
+			}else{
+				shipmentList = warehouse.getShipmentList();
+				// to reproduce the original file
+				for (Shipment shipment : shipmentList) {
+					JSONObject shipmentJson = shipment.toJSON();
+					shipmentJson.put("warehouse_id", warehouse.getId());
+					shipmentJson.put("warehouse_name", warehouse.getWarehouseName());
+					shipmentJsonList.add(shipmentJson);
+				}
 			}
 		}
 		warehouseTracker.put(id, shipmentJsonList);
@@ -280,24 +286,44 @@ public final class WarehouseFactory extends PersistentJson {
 	public void addParsedData(Map<String, Object> parsedData) {
 		Warehouse warehouse = new Warehouse((String)parsedData.get("warehouseName"),(String)parsedData.get("warehouseID"));
 
+		// add the warehouse
+		warehouseTracker.addWarehouse(warehouse);
+
 		String fTypeString = (String) parsedData.get("fTypeString");
 		FreightType fTypeEnum = (fTypeString == null) ? FreightType.NULL : FreightType.valueOf(fTypeString.toUpperCase());
 
 		String weightUnitString = (String)parsedData.get("wUnitString");
 		WeightUnit weightUnitEnum = (weightUnitString == null) ? WeightUnit.NULL : WeightUnit.valueOf(weightUnitString.toUpperCase());
 
-		// build a shipment
-		Shipment shipment = new Shipment.Builder()
-				.id((String)parsedData.get("shipmentID"))
-				.type(fTypeEnum)
-				.weight(((Number) parsedData.get("weight")).doubleValue())
-				.weightUnit(weightUnitEnum)
-				.date(((Number)parsedData.get("receiptDate")).longValue()).build();
-		// add the warehouse
-		warehouseTracker.addWarehouse(warehouse);
-		// add the shipment to the warehouse
-		warehouseTracker.addShipment(warehouse.getId(), shipment);
+		boolean shipmentsExist = ((fTypeString != null)
+				&& (weightUnitString != null)
+				&& parsedData.get("shipmentID") != null
+				&& parsedData.get("weight")  != null
+				&& parsedData.get("receiptDate") != null
+				&& parsedData.get("departure_date") != null);
 
+		if (shipmentsExist){
+			// build a shipment
+			Shipment shipment = new Shipment.Builder()
+					.id((String)parsedData.get("shipmentID"))
+					.type(fTypeEnum)
+					.weight(((Number) parsedData.get("weight")).doubleValue())
+					.weightUnit(weightUnitEnum)
+					.date(((Number)parsedData.get("receiptDate")).longValue())
+					.departureDate(((Number)parsedData.get("departure_date")).longValue()).build();
+			// add the shipment to the warehouse
+			warehouseTracker.addShipment(warehouse.getId(), shipment);
+		}
+	}
+
+	/**
+	 * Ships out specified shipment
+	 */
+	public void shipOutShipment(String warehouseID, Shipment shipment){
+		getWarehouse(warehouseID)
+				.getShipmentList()
+				.get(getWarehouse(warehouseID).getShipmentList().indexOf(shipment))
+				.shipOut();
 	}
 
 	/**
@@ -325,8 +351,6 @@ public final class WarehouseFactory extends PersistentJson {
 	/**
 	 * Deletes all warehouses for testing purposes
 	 */
-	public void deleteAllWarehouses() {
-		warehouses.clear();
-	}
+	public void deleteAllWarehouses() { warehouses.clear(); }
 
 }

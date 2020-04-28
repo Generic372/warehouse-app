@@ -40,6 +40,7 @@ public class XmlParser implements IParser {
      * Parse the xml warehouse object to actual warehouse object
      * @param warehouseXmlObject the xml warehouse object
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private static void parseXmlToWarehousePojo(WarehouseXml warehouseXmlObject) {
 
 

@@ -1,5 +1,7 @@
 package com.generic.models;
 
+import android.annotation.SuppressLint;
+
 import org.json.simple.JSONObject;
 
 import com.generic.utils.DateUtil;
@@ -11,7 +13,7 @@ import com.generic.utils.DateUtil;
 
 public class Shipment extends PersistentJson {
 
-	private static final String SHIPMENT_DETAIl_FORMAT_STRING = "Shipment_Id: %s\n  Freight_Type: %s\n  Weight: %.2f\n  Departure_Date: %s\n Receipt_Date: %s\n  Weight_Unit: %s";
+	private static final String SHIPMENT_DETAIL_FORMAT_STRING = "Shipment_Id: %s\n  Freight_Type: %s\n  Weight: %.2f\n  Departure_Date: %s\n Receipt_Date: %s\n  Weight_Unit: %s";
 	public static final String SHIPMENT_HAS_NOT_DEPARTED = "Shipment has not Departed";
 
 	private FreightType freight; // Freight type
@@ -27,9 +29,10 @@ public class Shipment extends PersistentJson {
 	 * @param weight shipment weight
 	 * @param receiptDate shipment receipt
 	 */
-	private Shipment(String shipmentID, FreightType freight, double weight, long receiptDate, WeightUnit weightUnit) {
+	private Shipment(String shipmentID, FreightType freight, double weight, long receiptDate, WeightUnit weightUnit, long departureDate) {
 		this.id = shipmentID;
 		this.freight = freight;
+		this.departureDate = departureDate;
 		this.weight = weight;
 		this.receiptDate = receiptDate;
 		this.weightUnit = weightUnit; // Handles .json Null fields?
@@ -76,9 +79,14 @@ public class Shipment extends PersistentJson {
 		departureDate = DateUtil.currentDate();
 	}
 
+	@SuppressLint("DefaultLocale")
 	@Override
 	public String toString() {
-		return String.format(SHIPMENT_DETAIl_FORMAT_STRING, id, freight.toString().toLowerCase(), weight, getDepartureDateString(), getReceiptDateString(), getWeightUnit().toString());
+		return String.format(SHIPMENT_DETAIL_FORMAT_STRING,
+				id, freight.toString().toLowerCase()
+				, weight, getDepartureDateString()
+				, getReceiptDateString()
+				, getWeightUnit().toString());
 	}
 
 	@Override
@@ -88,6 +96,7 @@ public class Shipment extends PersistentJson {
 		shipmentJSON.put("shipment_method", freight.toString().toLowerCase());
 		shipmentJSON.put("shipment_id", id);
 		shipmentJSON.put("weight", weight);
+		shipmentJSON.put("departure_date", departureDate);
 		shipmentJSON.put("weight_unit", weightUnit.toString().toLowerCase());
 		shipmentJSON.put("receipt_date", receiptDate);
 
@@ -100,6 +109,7 @@ public class Shipment extends PersistentJson {
 		private double weight;
 		private long receiptDate;
 		private WeightUnit weightUnit;
+		private long departureDate;
 
 		public Builder() {}
 
@@ -123,13 +133,18 @@ public class Shipment extends PersistentJson {
 			return this;
 		}
 
+		public Builder departureDate(long departureDate){
+			this.departureDate = departureDate;
+			return this;
+		}
+
 		public Builder weightUnit(WeightUnit weightUnit) {
 			this.weightUnit = weightUnit;
 			return this;
 		}
 
 		public Shipment build() {
-			return new Shipment(shipmentID, freight, weight, receiptDate, weightUnit);
+			return new Shipment(shipmentID, freight, weight, receiptDate, weightUnit, departureDate);
 		}
 	}
 }

@@ -18,6 +18,10 @@ import androidx.fragment.app.DialogFragment;
 import com.generic.androidtracker.R;
 import com.generic.androidtracker.interfaces.AddShipmentDialogListener;
 
+/**
+ * Displays and handles a dialog fragment
+ * to get user input.
+ */
 public class AddShipmentDialogFragment extends DialogFragment implements TextView.OnEditorActionListener {
     private EditText shipmentID;
     private EditText receiptDate;

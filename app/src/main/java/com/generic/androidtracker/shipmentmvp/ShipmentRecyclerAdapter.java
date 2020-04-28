@@ -1,19 +1,17 @@
 package com.generic.androidtracker.shipmentmvp;
 
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.generic.androidtracker.R;
 import com.generic.models.Shipment;
+import com.generic.models.WarehouseFactory;
 
 import java.util.List;
 
@@ -23,6 +21,7 @@ import java.util.List;
  */
 public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecyclerAdapter.ShipmentViewHolder> {
 
+    private final String warehouseID;
     List<Shipment> shipments;
 
     public static class ShipmentViewHolder extends RecyclerView.ViewHolder{
@@ -71,7 +70,9 @@ public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecycl
         }
 
         warehouseViewHolder.shipOutButton.setOnClickListener(e -> {
-            shipments.get(i).shipOut();
+            Shipment toShipOut = shipments.get(i);
+            WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
+            warehouseFactory.shipOutShipment(warehouseID, toShipOut);
             notifyDataSetChanged();
         });
     }
@@ -79,7 +80,10 @@ public class ShipmentRecyclerAdapter extends RecyclerView.Adapter<ShipmentRecycl
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) { super.onAttachedToRecyclerView(recyclerView); }
 
-    public ShipmentRecyclerAdapter(List<Shipment> shipments){ this.shipments = shipments; }
+    public ShipmentRecyclerAdapter(List<Shipment> shipments, String warehouseID){
+        this.shipments = shipments;
+        this.warehouseID = warehouseID;
+    }
 
     @Override
     public int getItemCount() {
