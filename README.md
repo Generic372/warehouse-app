@@ -1,5 +1,5 @@
 # WAREHOUSE-TRACKER
-[![Build Status](https://jenkins.autocicd.org/buildStatus/icon?job=warehouse-android-app)](https://jenkins.autocicd.org/job/warehouse-android-app/)
+[![Build Status](http://jenkins.autocicd.org:8080/buildStatus/icon?job=warehouse-android-app)](http://jenkins.autocicd.org:8080/buildStatus/icon?job=warehouse-android-app/)
 
 This repository house the Warehouse Tracker application for the android mobile platform.
 
