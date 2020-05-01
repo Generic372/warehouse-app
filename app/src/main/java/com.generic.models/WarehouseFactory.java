@@ -18,7 +18,8 @@ import org.json.simple.JSONObject;
  * the shipments in them. This will allow for consistency of objects as a
  * shipment can't exist without a warehouse. It would provide only the required
  * functionalities such as adding shipment, printing warehouse details, enabling
- * and disabled the freight receipt of a warehouse.
+ * and disabled the freight receipt of a warehouse. New feature: shipping out
+ * a shipment from a warehouse has added.
  *
  * @author GENERIC TEAM
  *
@@ -295,13 +296,9 @@ public final class WarehouseFactory extends PersistentJson {
 		String weightUnitString = (String)parsedData.get("wUnitString");
 		WeightUnit weightUnitEnum = (weightUnitString == null) ? WeightUnit.NULL : WeightUnit.valueOf(weightUnitString.toUpperCase());
 
-		boolean shipmentsExist = ((fTypeString != null)
-				&& (weightUnitString != null)
-				&& parsedData.get("shipmentID") != null
-				&& parsedData.get("weight")  != null
-				&& parsedData.get("receiptDate") != null
-				&& parsedData.get("departure_date") != null);
+		long departureDate = parsedData.get("departure_date") != null ? ((Number) parsedData.get("departure_date")).longValue() : 0L;
 
+		boolean shipmentsExist = parsedData.get("shipmentID") != null;
 		if (shipmentsExist){
 			// build a shipment
 			Shipment shipment = new Shipment.Builder()
@@ -310,7 +307,7 @@ public final class WarehouseFactory extends PersistentJson {
 					.weight(((Number) parsedData.get("weight")).doubleValue())
 					.weightUnit(weightUnitEnum)
 					.date(((Number)parsedData.get("receiptDate")).longValue())
-					.departureDate(((Number)parsedData.get("departure_date")).longValue()).build();
+					.departureDate((departureDate)).build();
 			// add the shipment to the warehouse
 			warehouseTracker.addShipment(warehouse.getId(), shipment);
 		}
