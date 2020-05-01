@@ -101,7 +101,6 @@ public class ShipmentActivity extends AppCompatActivity implements
         ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments, warehouseID);
 
         recyclerView.setAdapter(shipmentRecyclerAdapter);
-
     }
 
     @Override
@@ -200,12 +199,6 @@ public class ShipmentActivity extends AppCompatActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        saveState();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
         saveState();
     }
 
