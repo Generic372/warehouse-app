@@ -43,6 +43,7 @@ public class ShipmentActivity extends AppCompatActivity implements
     private String warehouseID;
     private boolean freightEnabled;
     private FloatingActionButton addButton;
+    private List<Shipment> shipments;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class ShipmentActivity extends AppCompatActivity implements
 
     @Override
     public void showShipments(List<Shipment> shipments) {
+        this.shipments = shipments;
         RecyclerView recyclerView = findViewById(R.id.cardList);
         RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
 
@@ -99,7 +101,6 @@ public class ShipmentActivity extends AppCompatActivity implements
         ShipmentRecyclerAdapter shipmentRecyclerAdapter = new ShipmentRecyclerAdapter(shipments, warehouseID);
 
         recyclerView.setAdapter(shipmentRecyclerAdapter);
-
     }
 
     @Override
@@ -201,17 +202,13 @@ public class ShipmentActivity extends AppCompatActivity implements
         saveState();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        saveState();
-    }
-
     private void saveState() {
         WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
         File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
         warehouseFactory.saveToDir(savedInstancePath.getAbsolutePath());
     }
+
+
 }
 
 
