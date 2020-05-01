@@ -21,6 +21,13 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    lintOptions {
+        warning 'InvalidPackage'
+		textReport true
+		textOutput 'stdout'
+		abortOnError false
+		ignoreWarnings false
+    }
 }
 
 dependencies {
