@@ -38,8 +38,13 @@ import com.hbisoft.pickit.PickiTCallbacks;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Responsible for handle the Warehouse UI components
+ * @author GENERIC-TEAM
+ */
 public class WarehouseActivity extends AppCompatActivity
-        implements WarehouseTrackerMVP.WarehouseView, AddWarehouseDialogListener, OnWarehouseListener, PickiTCallbacks {
+        implements WarehouseTrackerMVP.WarehouseView,
+        AddWarehouseDialogListener, OnWarehouseListener, PickiTCallbacks {
 
     public static final int REQUEST_CODE = 4;
     public static final String JSON_MIME_TYPE = "application/json";
@@ -61,6 +66,8 @@ public class WarehouseActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_view);
 
+        // Flag for Warehouse Activity to prevent it from loading saved instance
+        // leading to duplicates when navigating from Shipment Activity
         boolean ignoreSavedInstance = getIntent().getBooleanExtra("ignoreSavedInstance", false);
 
         Toolbar toolbar =  findViewById(R.id.my_toolbar);
@@ -236,6 +243,9 @@ public class WarehouseActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Exports Warehouse to android downloads directory
+     */
     private void exportDataToExternalStorage() {
         WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
         File exportPath = new File (Environment
@@ -244,6 +254,10 @@ public class WarehouseActivity extends AppCompatActivity
         warehouseFactory.saveToDir(exportPath.getAbsolutePath());
     }
 
+    /**
+     * Imports previously saved json contents from internal storage
+     * if one exists.
+     */
     private void restoreSavedState() {
         File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
         IParser jsonParser = new JsonParser();
@@ -266,7 +280,10 @@ public class WarehouseActivity extends AppCompatActivity
     public void PickiTonProgressUpdate(int progress) { }
 
     @Override
-    public void PickiTonCompleteListener(String path, boolean wasDriveFile, boolean wasUnknownProvider, boolean wasSuccessful, String Reason) {
+    public void PickiTonCompleteListener(String path,
+                                         boolean wasDriveFile,
+                                         boolean wasUnknownProvider,
+                                         boolean wasSuccessful, String Reason) {
         this.realPath = path;
     }
 
@@ -274,13 +291,6 @@ public class WarehouseActivity extends AppCompatActivity
     protected void onStop() {
         super.onStop();
         saveState();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        saveState();
-        pickiT.deleteTemporaryFile();
     }
 
     private void saveState() {
