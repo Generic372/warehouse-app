@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,7 +27,7 @@ import com.generic.androidtracker.interfaces.OnWarehouseListener;
 import com.generic.androidtracker.shipmentmvp.ShipmentActivity;
 import com.generic.androidtracker.R;
 import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
-import com.generic.androidtracker.WarehouseApplication;
+import com.generic.androidtracker.model.WarehouseApplication;
 import com.generic.models.Warehouse;
 import com.generic.models.WarehouseFactory;
 import com.generic.utils.IParser;
@@ -37,6 +39,9 @@ import com.hbisoft.pickit.PickiTCallbacks;
 
 import java.io.File;
 import java.util.List;
+
+import android.view.Window;
+
 
 /**
  * Responsible for handle the Warehouse UI components
@@ -54,6 +59,7 @@ public class WarehouseActivity extends AppCompatActivity
     private PickiT pickiT; // Needed to get the real path from uri
     private String realPath;
 
+
     // Storage Permissions
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
@@ -69,6 +75,16 @@ public class WarehouseActivity extends AppCompatActivity
         // Flag for Warehouse Activity to prevent it from loading saved instance
         // leading to duplicates when navigating from Shipment Activity
         boolean ignoreSavedInstance = getIntent().getBooleanExtra("ignoreSavedInstance", false);
+
+        Window window = WarehouseActivity.this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(WarehouseActivity.this,R.color.primaryDarkColor));
 
         Toolbar toolbar =  findViewById(R.id.my_toolbar);
         toolbar.setTitle("Warehouses");
@@ -298,4 +314,6 @@ public class WarehouseActivity extends AppCompatActivity
         File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
         warehouseFactory.saveToDir(savedInstancePath.getAbsolutePath());
     }
+
+
 }

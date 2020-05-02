@@ -7,6 +7,8 @@ import android.os.Bundle;
 
 import android.os.Environment;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.generic.androidtracker.R;
-import com.generic.androidtracker.WarehouseApplication;
+import com.generic.androidtracker.model.WarehouseApplication;
 import com.generic.androidtracker.warehousemvp.WarehouseActivity;
 import com.generic.androidtracker.interfaces.AddShipmentDialogListener;
 import com.generic.androidtracker.interfaces.WarehouseTrackerMVP;
@@ -61,6 +63,16 @@ public class ShipmentActivity extends AppCompatActivity implements
                         return onOptionsItemSelected(item);
                     }
                 });
+
+        Window window = ShipmentActivity.this.getWindow();
+        // clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+        // finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(ShipmentActivity.this,R.color.primaryDarkColor));
 
         //  Check Storage Permission
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -202,6 +214,9 @@ public class ShipmentActivity extends AppCompatActivity implements
         saveState();
     }
 
+    /**
+     * Saves the state of the data
+     */
     private void saveState() {
         WarehouseFactory warehouseFactory = WarehouseFactory.getInstance();
         File savedInstancePath = new File(getApplicationContext().getFilesDir(), "/warehousecontents.json");
