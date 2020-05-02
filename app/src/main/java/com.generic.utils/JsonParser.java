@@ -14,6 +14,10 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Parses JSON from file.
+ * @author GENERIC-TEAM
+ */
 public class JsonParser implements IParser {
     /**
      * Reads a file that is in JSON format containing various shipment information.
@@ -29,7 +33,6 @@ public class JsonParser implements IParser {
         JSONObject jsonFile = (JSONObject) jsonParser.parse(reader);
         JSONArray warehouseContents = (JSONArray) jsonFile.get("warehouse_contents");
         warehouseContents.forEach(warehouseObject -> parseJsonContentsToObjects((JSONObject) warehouseObject));
-
         reader.close();
     }
 
@@ -43,9 +46,7 @@ public class JsonParser implements IParser {
 
         String warehouseID = (String) warehouseObject.get("warehouse_id");
         String warehouseName = (String) warehouseObject.get("warehouse_name");
-
         String fTypeString = (String) warehouseObject.get("shipment_method");
-
         String weightUnitString = (String)warehouseObject.get("weight_unit");
 
         Map<String, Object> parsedData = new HashMap<String, Object>();
