@@ -24,6 +24,7 @@ import com.generic.xml.models.WarehouseXml;
  * Parses data from Json and Xml files
  * @author GENERIC TEAM
  */
+@Deprecated
 public class Parsers {
 
 	private Parsers() {}
