@@ -63,39 +63,5 @@ public class WarehouseApplication extends Application implements
     }
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
-/*
-        Warehouse warehouse = new Warehouse("W121", "12100");
-        Warehouse warehouse2 = new Warehouse("W1213", "12110");
-        Warehouse warehouse3 = new Warehouse("W1293", "10110");
-        Warehouse warehouse4 = new Warehouse("W1223", "11110");
-        Warehouse warehouse5 = new Warehouse("W1203", "14110");
-        Warehouse warehouse6 = new Warehouse("W1293", "10170");
-        Warehouse warehouse7 = new Warehouse("W1293", "15110");
-
-        warehouseFactory.addWarehouse(warehouse);
-        warehouseFactory.addWarehouse(warehouse2);
-        warehouseFactory.addWarehouse(warehouse3);
-        warehouseFactory.addWarehouse(warehouse4);
-        warehouseFactory.addWarehouse(warehouse5);
-        warehouseFactory.addWarehouse(warehouse6);
-        warehouseFactory.addWarehouse(warehouse7);
-
-        for (int i = 0; i <= 6; i++){
-            Shipment shipment = new Shipment
-                    .Builder()
-                    .id("Shipment " + i)
-                    .date(1112121313L)
-                    .type(FreightType.AIR)
-                    .weight(98.9D)
-                    .weightUnit(WeightUnit.KG)
-                    .build();
-            warehouseFactory.getWarehousesList().get(1).addShipment(shipment);
-        }
-
- */
-
-    }
+    public void onCreate() { super.onCreate(); }
 }
